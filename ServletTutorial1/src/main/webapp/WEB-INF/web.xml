@@ -18,4 +18,8 @@
   	  <param-name>mode</param-name>
   	  <param-value>read</param-value>
     </context-param>
+    
+    <session-config>
+    <session-timeout>1</session-timeout>
+  </session-config>
 </web-app>
