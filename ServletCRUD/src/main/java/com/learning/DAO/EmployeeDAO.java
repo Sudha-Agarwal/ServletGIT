@@ -3,37 +3,56 @@ package com.learning.DAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.learning.Bean.Employee;
 
 public class EmployeeDAO {
+	
+	public static Connection getConnection() {
+		Connection con = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/simplilearn","root","root");
+			
+		}
+		catch(Exception e) {
+			System.out.println(e);
+			
+		}
+		return con;
+		
+	}
 
     public int registerEmployee(Employee employee) throws ClassNotFoundException {
         String INSERT_USERS_SQL = "INSERT INTO employee" +
-            "  (id, first_name, last_name, username, password, address, contact) VALUES " +
+            "  (first_name, last_name, username, password, address, contact) VALUES " +
             " (?, ?, ?, ?, ?,?,?);";
 
         int result = 0;
-
-        //Class.forName("com.mysql.jdbc.Driver");
-
-        try (Connection connection = DriverManager
-            .getConnection("jdbc:mysql://localhost:3306/simplilearn?", "root", "root");
-
+       
+        try {
+        	
+        	Connection connection = EmployeeDAO.getConnection();
+        	
             // Step 2:Create a statement using connection object
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
-            preparedStatement.setInt(1, 1);
-            preparedStatement.setString(2, employee.getFirstName());
-            preparedStatement.setString(3, employee.getLastName());
-            preparedStatement.setString(4, employee.getUsername());
-            preparedStatement.setString(5, employee.getPassword());
-            preparedStatement.setString(6, employee.getAddress());
-            preparedStatement.setString(7, employee.getContact());
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL);
+           
+            preparedStatement.setString(1, employee.getFirstName());
+            preparedStatement.setString(2, employee.getLastName());
+            preparedStatement.setString(3, employee.getUsername());
+            preparedStatement.setString(4, employee.getPassword());
+            preparedStatement.setString(5, employee.getAddress());
+            preparedStatement.setString(6, employee.getContact());
 
             System.out.println(preparedStatement);
             // Step 3: Execute the query or update query
             result = preparedStatement.executeUpdate();
+            
 
         } catch (SQLException e) {
             // process sql exception
@@ -41,6 +60,29 @@ public class EmployeeDAO {
         }
         return result;
     }
+    
+    public static List<Employee> getAllEmployees(){  
+        List<Employee> list=new ArrayList<Employee>();  
+          
+        try{  
+            Connection con=EmployeeDAO.getConnection();  
+            PreparedStatement ps=con.prepareStatement("select * from employee");  
+            ResultSet rs=ps.executeQuery();  
+            while(rs.next()){  
+            	Employee e=new Employee();  
+                e.setFirstName(rs.getString(2));  
+                e.setLastName(rs.getString(3));  
+                e.setUsername(rs.getString(4));  
+                e.setPassword(rs.getString(5));  
+                e.setAddress(rs.getString(6));
+                e.setContact(rs.getString(7));
+                list.add(e);  
+            }  
+            con.close();  
+        }catch(Exception e){e.printStackTrace();}  
+          
+        return list;  
+    }  
 
     private void printSQLException(SQLException ex) {
         for (Throwable e: ex) {
