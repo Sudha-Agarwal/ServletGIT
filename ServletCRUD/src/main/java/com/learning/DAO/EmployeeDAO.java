@@ -1,5 +1,6 @@
 package com.learning.DAO;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -28,7 +29,7 @@ public class EmployeeDAO {
 		
 	}
 
-    public int registerEmployee(Employee employee) throws ClassNotFoundException {
+    public static int registerEmployee(Employee employee) throws ClassNotFoundException {
         String INSERT_USERS_SQL = "INSERT INTO employee" +
             "  (first_name, last_name, username, password, address, contact) VALUES " +
             " (?, ?, ?, ?, ?,?,?);";
@@ -61,13 +62,32 @@ public class EmployeeDAO {
         return result;
     }
     
-    public static List<Employee> getAllEmployees(){  
+	/*
+	 * public static List<Employee> getAllEmployees(){ List<Employee> list=new
+	 * ArrayList<Employee>();
+	 * 
+	 * try{ Connection con=EmployeeDAO.getConnection(); PreparedStatement
+	 * ps=con.prepareStatement("select * from employee"); ResultSet
+	 * rs=ps.executeQuery(); while(rs.next()){ Employee e=new Employee();
+	 * e.setFirstName(rs.getString(2)); e.setLastName(rs.getString(3));
+	 * e.setUsername(rs.getString(4)); e.setPassword(rs.getString(5));
+	 * e.setAddress(rs.getString(6)); e.setContact(rs.getString(7)); list.add(e); }
+	 * con.close(); }catch(Exception e){e.printStackTrace();}
+	 * 
+	 * return list; }
+	 */
+    
+    public static List<Employee> getAllEmployeesCallable(){  
         List<Employee> list=new ArrayList<Employee>();  
           
         try{  
             Connection con=EmployeeDAO.getConnection();  
-            PreparedStatement ps=con.prepareStatement("select * from employee");  
-            ResultSet rs=ps.executeQuery();  
+            
+            CallableStatement stmt=con.prepareCall("{call GetEmployeeDetails()}");  
+            
+            //stmt.execute(); 
+            ResultSet rs = stmt.executeQuery();
+            
             while(rs.next()){  
             	Employee e=new Employee();  
                 e.setFirstName(rs.getString(2));  
@@ -77,14 +97,42 @@ public class EmployeeDAO {
                 e.setAddress(rs.getString(6));
                 e.setContact(rs.getString(7));
                 list.add(e);  
-            }  
-            con.close();  
+            }            
+            con.close();             
         }catch(Exception e){e.printStackTrace();}  
           
         return list;  
     }  
+    
+    public static Employee getAllEmployeeByIdCallable(int id){  
+       
+    	Employee emp=new Employee();  
+        try{  
+            Connection con=EmployeeDAO.getConnection();  
+            
+            CallableStatement stmt=con.prepareCall("{call GetEmployeeDetailsById(?)}");  
+            stmt.setInt(1, id);
+            
+            //stmt.execute(); 
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){  
+            	
+            	emp.setFirstName(rs.getString(2));  
+            	emp.setLastName(rs.getString(3));  
+            	emp.setUsername(rs.getString(4));  
+            	emp.setPassword(rs.getString(5));  
+            	emp.setAddress(rs.getString(6));
+            	emp.setContact(rs.getString(7));
+               
+            }            
+            con.close();             
+        }catch(Exception e){e.printStackTrace();}  
+          
+        return emp;  
+    }  
 
-    private void printSQLException(SQLException ex) {
+    private static void printSQLException(SQLException ex) {
         for (Throwable e: ex) {
             if (e instanceof SQLException) {
                 e.printStackTrace(System.err);

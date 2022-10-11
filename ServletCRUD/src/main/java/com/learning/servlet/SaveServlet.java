@@ -60,13 +60,22 @@ public class SaveServlet extends HttpServlet {
 		employee.setAddress(address);
 
 		try {
-			employeeDao.registerEmployee(employee);
+			int status = employeeDao.registerEmployee(employee);
+	        if(status>0){  
+	        	pw.println("<h1>Employee successfully registered!</h1>");
+	            request.getRequestDispatcher("index.html").include(request, response);  
+	        }else{  
+	        	pw.println("<h1>Sorry! unable to save record<h1>");  
+	        	 request.getRequestDispatcher("index.html").include(request, response);  
+	        } 
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			pw.println("<h1>SQL Exception</h1>");
 			e.printStackTrace();
 		}
-		pw.println("<h1>Employee successfully registered!</h1>");
-		 request.getRequestDispatcher("index.html").include(request, response);
+		
+		 //request.getRequestDispatcher("index.html").include(request, response);
 	}
 }
 

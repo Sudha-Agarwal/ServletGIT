@@ -38,7 +38,7 @@ public class ViewServlet extends HttpServlet {
 		out.println("<a href='index.html'>Add New Employee</a>");  
 		out.println("<h1>Employees List</h1>");  
 
-		List<Employee> list=EmployeeDAO.getAllEmployees();  
+		List<Employee> list=EmployeeDAO.getAllEmployeesCallable();  
 
 		out.print("<table border='1' width='100%'");  
 		out.print("<tr><th>First Name</th><th>Last Name</th><th>UserName</th><th>Address</th></tr>");  
@@ -56,8 +56,24 @@ public class ViewServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		response.setContentType("text/html");  
+		PrintWriter out=response.getWriter();  
+		out.println("<a href='index.html'>Add New Employee</a>");  
+		out.println("<h1>Employees List</h1>");  
+		
+		int id = Integer.valueOf(request.getParameter("id"));
+
+		Employee e=EmployeeDAO.getAllEmployeeByIdCallable(id);  
+
+		out.print("<table border='1' width='100%'");  
+		out.print("<tr><th>First Name</th><th>Last Name</th><th>UserName</th><th>Address</th></tr>");  
+				  
+					out.print("<tr><td>"+e.getFirstName()+"</td><td>"+e.getLastName()+
+							"</td><td>"+e.getUsername()+"</td><td>"+e.getAddress()+"</td></tr>");  
+				  
+				out.print("</table>");  
+
+				out.close();  
 	}
 
 }
