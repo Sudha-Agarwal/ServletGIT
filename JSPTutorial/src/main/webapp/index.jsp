@@ -9,8 +9,8 @@
 </head>
 <body>
 <% out.print(2*5); %>  
-<% out.print("welcome to jsp"); %>  
-<%= "welcome to jsp" %>  
+<% out.print("welcome to jsp"); %>  <!-- scriptlet -->
+<%= "welcome to jsp" %>  <!-- Expression -->
 <strong>Current Time is</strong>: <%=new Date() %>
 
 <form action="welcome.jsp">  
