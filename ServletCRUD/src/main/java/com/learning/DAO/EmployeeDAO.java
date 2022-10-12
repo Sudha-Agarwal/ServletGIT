@@ -13,6 +13,22 @@ import com.learning.Bean.Employee;
 
 public class EmployeeDAO {
 	
+	public static Connection getConnection1() {
+		Connection con = null;
+		
+		try(Connection con1 = DriverManager.getConnection("jdbc:mysql://localhost/simplilearn","root","root");
+		) {			
+			con = con1;
+			
+		}
+		catch(Exception e) {
+			System.out.println(e);			
+		}
+		return con;
+		
+	}
+
+	
 	public static Connection getConnection() {
 		Connection con = null;
 		
