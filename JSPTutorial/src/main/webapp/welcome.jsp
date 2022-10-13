@@ -11,5 +11,11 @@
 String name=request.getParameter("uname");  
 out.print("welcome "+name);  
 %>  
+
+<jsp:forward page="printdate.jsp" >  
+<jsp:param name="name" value="javatpoint.com" />  
+</jsp:forward>  
+
+<jsp:include page="printdate.jsp" />  
 </body>
 </html>
