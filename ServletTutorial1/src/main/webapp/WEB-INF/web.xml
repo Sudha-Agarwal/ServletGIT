@@ -23,7 +23,7 @@
     <session-timeout>1</session-timeout>
   </session-config>
   
-  <filter>
+<!--   <filter>
     <filter-name>AuthenticationFilter</filter-name>
     <filter-class>filter.AuthenticationFilter</filter-class>
   </filter>
@@ -33,5 +33,5 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   
-  
+  -->
 </web-app>
