@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -22,15 +24,19 @@ public class Meeting {
 	@Column(name="SUBJECT")
 	private String subject;
 	
+	public Meeting() {
+		super();
+	}
+
 	@Column(name="MEETING_DATE")
 	private Date meetingDate;
 
-	@ManyToMany(mappedBy="meetings")
+	@ManyToMany(fetch = FetchType.EAGER,			
+		    mappedBy="meetings")
 	private Set<Employee> employees = new HashSet<Employee>();
 	
 	public Meeting(String subject) {
 		this.subject = subject;
-		this.meetingDate = new Date();
 	}
 
 	public Long getMeetingId() {

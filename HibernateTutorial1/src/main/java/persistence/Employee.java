@@ -65,8 +65,7 @@ public class Employee {
 	private Set<Meeting> meetings = new HashSet<Meeting>();
 	
 	
-	public int getId() {
-		return id;
+	public int getId() {		return id;
 	}
 
 	public Department getDepartment() {
