@@ -20,6 +20,9 @@
          &nbsp;&nbsp;&nbsp;
          <a href="class-teacher-assign.jsp">Assign Teacher to a Class</a>   
          &nbsp;&nbsp;&nbsp;
+         
+         <a href="class-teacher-subject-assign.jsp">Assign Teacher and Subject to a Class</a>   
+         &nbsp;&nbsp;&nbsp;
                
         </h2>
  </center>

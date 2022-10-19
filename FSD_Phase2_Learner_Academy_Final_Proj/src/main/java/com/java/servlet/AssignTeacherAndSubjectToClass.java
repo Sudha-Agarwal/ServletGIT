@@ -3,11 +3,9 @@ package com.java.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import com.java.DAO.AssignTeacherToClassDAO;
+import com.java.DAO.AssignTeacherAndSubjectToClassDAO;
 import com.java.DAO.ClassDAOImpl;
-import com.java.DAO.TeacherDAOImpl;
 import com.java.persistence.Class;
-import com.java.persistence.Teacher;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,16 +14,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class AssignTeacherToClass
+ * Servlet implementation class AssignTeacherAndSubjectToClass
  */
-@WebServlet("/AssignTeacherToClass")
-public class AssignTeacherToClass extends HttpServlet {
+@WebServlet("/AssignTeacherAndSubjectToClass")
+public class AssignTeacherAndSubjectToClass extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AssignTeacherToClass() {
+    public AssignTeacherAndSubjectToClass() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,17 +44,16 @@ public class AssignTeacherToClass extends HttpServlet {
 
 		int teacherId = Integer.valueOf(request.getParameter("teachers"));
 		int classId = Integer.valueOf(request.getParameter("classes"));
+		int subjectId = Integer.valueOf(request.getParameter("subjects"));
 		
 		Class Class= new Class();
 		//Teacher teacher = new TeacherDAOImpl().getTeacher(teacherId);				
 		Class = new ClassDAOImpl().getClasses(classId);		
-		 System.out.println(Class.getClassId());
-		//Class.getTeachers().add(teacher);		
-
+		
 		try {
-			int status  = new AssignTeacherToClassDAO().addTeacherToClass(Class, teacherId);
+			int status  = new AssignTeacherAndSubjectToClassDAO().addTeacherAndSubjectToClass(Class, teacherId, subjectId);
 			if(status>0){  
-				pw.println("<h1>Teacher AssignedTo Class successfully!</h1>");
+				pw.println("<h1>Teacher and Subject assignedTo Class successfully!</h1>");
 				request.getRequestDispatcher("index.jsp").include(request, response);  
 			}else{  
 				pw.println("<h1>Sorry! unable to save record<h1>");  
@@ -68,6 +65,9 @@ public class AssignTeacherToClass extends HttpServlet {
 			pw.println("<h1>SQL Exception</h1>");
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
 
 }

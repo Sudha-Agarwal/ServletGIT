@@ -45,11 +45,24 @@ public class ClassDAOImpl implements ClassDAO{
 
 	@Override
 	public Class getClasses(int classId) {
+		Class Class = null;
+		try {
 		sessionObj = sessionFactoryObj.getCurrentSession();
 		sessionObj.getTransaction().begin();	
 		
-		Class Class =  (Class) sessionObj.get(Class.class, classId);
+		Class =  (Class) sessionObj.get(Class.class, classId);
 		sessionObj.getTransaction().commit();
+		
+		}
+		catch(Exception ex) {
+			if(null != sessionObj.getTransaction()) {
+				System.out.println("\n.......Transaction Is Being Rolled Back.......");
+				sessionObj.getTransaction().rollback();				
+			}			
+		}
+		finally {
+			//sessionObj.close();			
+		}
 		return Class;
 	}
 

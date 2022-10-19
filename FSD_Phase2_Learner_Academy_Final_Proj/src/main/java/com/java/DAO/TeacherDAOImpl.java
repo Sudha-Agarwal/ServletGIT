@@ -45,16 +45,37 @@ public class TeacherDAOImpl implements TeacherDAO{
 	}
 
 	@Override
-	public int getTeacher(int teacherId) {
+	public Teacher getTeacher(int teacherId) {
+		Teacher list = null;
+		try {
 		sessionObj = sessionFactoryObj.openSession();
-		//sessionObj.getTransaction().begin();	
-		Query q=sessionObj.createQuery("select * from Teacher where teacher_id=:i");  
+		sessionObj.getTransaction().begin();	
+		Query q=sessionObj.createQuery("from Teacher where teacher_id=:i");  
 		q.setParameter("i",teacherId);  
-		
-		return sessionObj.createQuery("select *  FROM teacher WHERE teacher_id = "+teacherId).executeUpdate();
+		list=(Teacher) q.uniqueResult();
+		}
+		catch(Exception ex) {
+			if(null != sessionObj.getTransaction()) {
+				System.out.println("\n.......Transaction Is Being Rolled Back.......");
+				sessionObj.getTransaction().rollback();				
+			}				
+		}
+		finally {
+			sessionObj.close();	
+		}
+		return list;
+		//return sessionObj.createQuery("select *  FROM teacher WHERE teacher_id = "+teacherId).executeUpdate();
 		//Teacher teacher =  (Teacher) sessionObj.get(Teacher.class, teacherId);
 		//sessionObj.getTransaction().commit();
 		//return teacher;
+		
+		/*
+		 * sessionObj = sessionFactoryObj.getCurrentSession();
+		 * sessionObj.getTransaction().begin(); //sessionFactoryObj.getCurrentSession().
+		 * createQuery("select*  FROM department WHERE id = "+id).executeUpdate();
+		 * Meeting meeting = (Meeting) sessionObj.get(Meeting.class, id);
+		 * sessionObj.getTransaction().commit(); return meeting;
+		 */
 				
 	}
 

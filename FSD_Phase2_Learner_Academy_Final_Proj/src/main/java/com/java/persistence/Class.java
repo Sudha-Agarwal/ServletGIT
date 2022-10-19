@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,14 +26,14 @@ public class Class {
 	@Column(name = "class_name")
 	private String className;
 	
-	@ManyToMany(cascade = {CascadeType.ALL})
+	@ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
 	@JoinTable(name="CLASS_SUBJECT", 
 				joinColumns={@JoinColumn(name="class_id")}, 
 				inverseJoinColumns={@JoinColumn(name="subject_id")})
 	private Set<Subject> subjects = new HashSet<Subject>();
 	
 	
-	@ManyToMany(cascade = {CascadeType.ALL})
+	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	@JoinTable(name="CLASS_TEACHER", 
 				joinColumns={@JoinColumn(name="class_id")}, 
 				inverseJoinColumns={@JoinColumn(name="teacher_id")})

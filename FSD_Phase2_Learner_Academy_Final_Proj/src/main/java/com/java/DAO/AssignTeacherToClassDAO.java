@@ -14,7 +14,7 @@ public class AssignTeacherToClassDAO {
 	Session sessionObj;
 	
 	@SuppressWarnings("finally")
-	public int addEmployeeToMeeting(Class Class1, int teacherId) {
+	public int addTeacherToClass(Class Class1, int teacherId) {
 		try {	
 			sessionObj = sessionFactoryObj.openSession();
 			sessionObj.getTransaction().begin();
